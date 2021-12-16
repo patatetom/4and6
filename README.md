@@ -12,7 +12,6 @@ small pieces of code dedicated to the digital investigation of Windows (mainly f
 ```console
 $ evtx.toxml /mnt/Windows/System32/winevt/Logs/System.evtx 2> /tmp/evtx.toxml.log
 <Events File="/mnt/Windows/System32/winevt/Logs/System.evtx">
-
 <Event>
   <System>
 …
@@ -21,9 +20,7 @@ $ evtx.toxml /mnt/Windows/System32/winevt/Logs/System.evtx 2> /tmp/evtx.toxml.lo
 …
   </EventData>
 </Event>
-
 …
-
 </Events>
 ```
 
@@ -42,6 +39,15 @@ $ evtx.toxml /mnt/Windows/System32/winevt/Logs/Microsoft-Windows-Kernel-PnP%4Con
 2021-12-14T08:39:00.404377100Z	{'DeviceInstanceId': 'USB\\VID_…
 2021-12-14T08:39:00.393581500Z	{'DeviceInstanceId': 'USB\\VID_…
 …
+
+$ sqlite3 /tmp/events.db 'CREATE TABLE IF NOT EXISTS "events" (file TEXT, provider TEXT, eventid INT, date TEXT, recordid INT, data TEXT);'
+$ sqlite3 -cmd '.mode tabs' /tmp/events.db '.import /dev/stdin events' < <(
+  for evtx in /mnt/Windows/System32/winevt/Logs/*.evtx
+  do
+    evtx.toxml "${evtx}" | evtx.totsv
+  done 2> /tmp/evtx.toxml.log
+)
+$ sqlite3 /tmp/events.db 'SELECT … FROM events WHERE … ORDER BY date DESC;'
 ```
 
 - other tools to look at :
