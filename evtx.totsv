@@ -1,0 +1,20 @@
+#!/bin/python3
+
+import xml.etree.ElementTree as xeet
+
+# evtx.toxml /mnt/Windows/System32/winevt/Logs/System.evtx | evtx.totsv
+Evtx = xeet.parse('/dev/stdin')
+Events = Evtx.getroot()
+File = Events.get('File')
+
+for Event in Events:
+   System, EventData = Event
+   # only Provider, EventID, TimeCreated, EventRecordID are exported
+   Provider = System.find('Provider').get('Name')
+   EventID = int(System.find('EventID').text)
+   TimeCreated = System.find('TimeCreated').get('SystemTime')
+   EventRecordID = int(System.find('EventRecordID').text)
+   Data = {}
+   for Item in EventData:
+   	if Item.text: Data[Item.get('Name', 'Data')] = Item.text
+   print(File, Provider, EventID, TimeCreated, EventRecordID, Data, sep = '\t')
