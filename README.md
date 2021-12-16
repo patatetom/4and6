@@ -29,6 +29,14 @@ $ evtx.toxml /mnt/Windows/System32/winevt/Logs/System.evtx 2> /tmp/evtx.toxml.lo
 
   - `evtx.totsv`
 
+> `evtx.totsv` is based on `evtx.toxml` export
+
+```console
+$ evtx.toxml /mnt/Windows/System32/winevt/Logs/Application.evtx 2> /tmp/evtx.toxml.log | evtx.totsv
+/mnt/Windows/System32/winevt/Logs/Application.evtx	Microsoft-Windows-User Profiles Service	1531	2021-10-27T10:59:43.418663000Z	1	{…
+…
+```
+
 - other tools to look at :
   - `evtx_dump` at https://github.com/omerbenamram/evtx
   - python `python-evtx` module at https://github.com/williballenthin/python-evtx
