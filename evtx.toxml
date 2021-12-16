@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# check argument
+evtx=${1:?$'\r\e[K'missing evtx filename}
+[ "${2:-}" ] && msg=${error:?$'\r\e[K'too many arguments}
+
+# print informations or errors on stderr
+{ echo ${evtx}; evtxinfo "${evtx}"; } | sed '2,3d;$d' &> /dev/stderr
+
+# insert the export between the Events tags
+echo "<Events File=\"${evtx}\">"
+evtxexport -f xml "${evtx}" |  # exporte from evtxexport (libevtx)
+sed '1d;s/ xmlns="[^"]*"//g'   # remove version and namespace
+echo '</Events>'
