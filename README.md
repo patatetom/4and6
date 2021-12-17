@@ -1,6 +1,32 @@
 # 4and6
 small pieces of code dedicated to the digital investigation of Windows (mainly from Linux)
 
+
+## TIME
+
+> times are usually stored in UTC format.
+
+- from UTC to locale time (time zone in which the following commands are executed) :
+
+```console
+$ # Z and UTC are equivalent
+$ date -d 2021-12-14T08:39:00.408109200Z
+Tue Dec 14 09:39:00 CET 2021
+
+$ # Z and UTC are equivalent
+$ date -d "2021-12-14 08:39:00 UTC"
+Tue Dec 14 09:39:00 CET 2021
+
+$ # input format must have a valid format
+$ date -d "Tue Dec 14 08:39:00 UTC"
+Tue Dec 14 09:39:00 CET 2021
+
+$ # output format can be specified
+$ date -d "2021-12-14 08:39 UTC" +'%Y%m%d%H%M%S'
+20211214093900
+```
+
+
 ## EVTX
 
 - used tools :
