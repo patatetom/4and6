@@ -30,6 +30,18 @@ $ date -d "2021-12-14 08:39 UTC" +'%Y%m%d%H%M%S'
 20211214093900
 ```
 
+- from UTC to specified time zone :
+
+```console
+$ # find/show time zones
+$ timedatectl list-timezones | grep -i asia/r
+Asia/Rangoon
+Asia/Riyadh
+
+$ TZ="Asia/Riyadh" date -d ' Tue Dec 14 08:39:00 UTC'
+Tue Dec 14 11:39:00 +03 2021
+```
+
 
 ## EVTX
 
