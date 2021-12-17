@@ -9,7 +9,11 @@ small pieces of code dedicated to the digital investigation of Windows (mainly f
 - from UTC to locale time (time zone in which the following commands are executed) :
 
 ```console
-$ # Z and UTC are equivalent
+$ # get locale time zone
+$ timedatectl -p Timezone show
+Timezone=Europe/Paris
+
+$ # Paris is UTC+1 on december (HNEC)
 $ date -d 2021-12-14T08:39:00.408109200Z
 Tue Dec 14 09:39:00 CET 2021
 
