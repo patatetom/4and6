@@ -10,6 +10,7 @@ small pieces of code dedicated to the digital investigation of Windows (mainly f
   - `evtx.toxml`
 
 ```console
+$ # export in xml format
 $ evtx.toxml /mnt/Windows/System32/winevt/Logs/System.evtx 2> /tmp/evtx.toxml.log
 <Events File="/mnt/Windows/System32/winevt/Logs/System.evtx">
 <Event>
@@ -29,10 +30,12 @@ $ evtx.toxml /mnt/Windows/System32/winevt/Logs/System.evtx 2> /tmp/evtx.toxml.lo
 > `evtx.totsv` is based on `evtx.toxml` export
 
 ```console
+$ # export in tsv format
 $ evtx.toxml /mnt/Windows/System32/winevt/Logs/Application.evtx 2> /tmp/evtx.toxml.log | evtx.totsv
 /mnt/Windows/System32/winevt/Logs/Application.evtx	Microsoft-Windows-User Profiles Service	1531	2021-10-27T10:59:43.418663000Z	1	{…
 …
 
+$ # tsv lends itself easily to grep et cetera
 $ evtx.toxml /mnt/Windows/System32/winevt/Logs/Microsoft-Windows-Kernel-PnP%4Configuration.evtx 2> /tmp/evtx.toxml.log | evtx.totsv |
   cut -f 4,6 | grep 'VID_....&PID_...' | sort -r
 2021-12-14T08:39:00.408109200Z	{'DeviceInstanceId': 'USBSTOR\\Disk&…
@@ -40,6 +43,7 @@ $ evtx.toxml /mnt/Windows/System32/winevt/Logs/Microsoft-Windows-Kernel-PnP%4Con
 2021-12-14T08:39:00.393581500Z	{'DeviceInstanceId': 'USB\\VID_…
 …
 
+$ # tsv can also be easily integrated into a sqlite database
 $ sqlite3 /tmp/events.db 'CREATE TABLE IF NOT EXISTS "events" (file TEXT, provider TEXT, eventid INT, date TEXT, recordid INT, data TEXT);'
 $ sqlite3 -cmd '.mode tabs' /tmp/events.db '.import /dev/stdin events' < <(
   for evtx in /mnt/Windows/System32/winevt/Logs/*.evtx
